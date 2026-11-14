@@ -63,6 +63,7 @@ class StudentManagementApp(ctk.CTk):
                 anchor="w",
             ).pack(fill="x", padx=18, pady=6)
 
+        # Footer - loop ke bahar
         ctk.CTkLabel(
             self.sidebar,
             text="Student Management v1.0",
@@ -93,7 +94,7 @@ class StudentManagementApp(ctk.CTk):
         ).pack(anchor="w", padx=35)
 
         stats_frame = ctk.CTkFrame(self.content_frame, fg_color="transparent")
-        stats_frame.pack(fill="x", padx=35)
+        stats_frame.pack(fill="x", padx=35, pady=(10, 0))
 
         stats = [
             ("Total Students", "—", "#2563EB"),
@@ -123,17 +124,17 @@ class StudentManagementApp(ctk.CTk):
                 font=("Arial", 28, "bold"),
                 text_color=color,
             ).pack(anchor="w", padx=18)
+        # Student performance section
+        performance_frame = ctk.CTkFrame(
+            self.content_frame, fg_color="white", corner_radius=12, height=200
+        )
 
-            performance_frame = ctk.CTkFrame(
-                self.content_frame, fg_color="white", corner_radius=12, height=200
-            )
-
-            performance_frame.pack(
-                fill="x",
-                padx=35,
-                pady=25,
-            )
-
+        performance_frame.pack(
+            fill="x",
+            padx=35,
+            pady=25,
+        )
+        performance_frame.pack_propagate(False)
         ctk.CTkLabel(
             performance_frame,
             text="Student Performance",
@@ -143,10 +144,94 @@ class StudentManagementApp(ctk.CTk):
 
         ctk.CTkLabel(
             performance_frame,
-            text="Student performance data will appear here.",
+            text="Grade distributed overview.",
             font=("Arial", 14),
             text_color="#64748B",
-        ).pack(anchor="w", padx=20)
+        ).pack(anchor="w", padx=20, pady=(0, 15))
+
+        grade_data = [
+            {"grade": "A", "count": 18, "percentage": 90, "color": "#16A34A"},
+            {"grade": "B", "count": 14, "percentage": 70, "color": "#2563EB"},
+            {"grade": "C", "count": 10, "percentage": 50, "color": "#D97706"},
+            {"grade": "D", "count": 6, "percentage": 30, "color": "#EA580C"},
+            {"grade": "Fail", "count": 3, "percentage": 15, "color": "#DC2626"},
+        ]
+
+        chart_area = ctk.CTkFrame(
+            performance_frame,
+            fg_color="transparent",
+        )
+        chart_area.pack(fill="both", expand=True, padx=25, pady=(0, 15))
+
+        for index, item in enumerate(grade_data):
+            chart_area.grid_columnconfigure(index, weight=1)
+
+            column = ctk.CTkFrame(chart_area, fg_color="transparent")
+
+            column.grid(row=0, column=index, sticky="nsew", padx=12)
+
+            ctk.CTkLabel(
+                column,
+                text=str(item["count"]),
+                font=("Arial", 14, "bold"),
+                text_color="#172B4D",
+            ).pack(pady=(0, 6))
+
+            bar_track = ctk.CTkFrame(
+                column, fg_color="#E8EEF7", corner_radius=6, height=120, width=45
+            )
+            bar_track.pack()
+            bar_track.pack_propagate(False)
+
+            bar_height = int(120 * item["percentage"] / 100)
+
+            bar = ctk.CTkFrame(
+                bar_track, fg_color=item["color"], corner_radius=6, height=bar_height
+            )
+            bar.pack(side="bottom", fill="x")
+            ctk.CTkLabel(
+                column,
+                text=item["grade"],
+                font=("Arial", 14, "bold"),
+                text_color="#64748B",
+            ).pack(pady=(8, 0))
+
+            quick_actions_frame = ctk.CTkFrame(
+                self.content_frame, fg_color="white", corner_radius=12, height=180
+            )
+
+            quick_actions_frame.pack(fill="x", padx=35, pady=(0, 25))
+            quick_actions_frame.pack_propagate(False)
+
+            ctk.CTkLabel(
+                quick_actions_frame,
+                text="Quick Action",
+                font=("Arial", 14, "bold"),
+                text_color="#172B4D",
+            ).pack(anchor="w", padx=20, pady=(18, 12))
+
+            action_container = ctk.CTkFrame(quick_actions_frame, fg_color="transparent")
+            action_container.pack(fill="x", padx=20)
+
+            ctk.CTkButton(
+                action_container,
+                text="+ Add New Student",
+                height=42,
+                corner_radius=8,
+                fg_color="#2563EB",
+                hover="#1D4ED8",
+                command=self.show_add_student,
+            ).pack(side="left", padx=(0, 12))
+
+            ctk.CTkButton(
+                action_container,
+                text="View All Students",
+                height=42,
+                corner_radius=8,
+                fg_color="#16A34A",
+                hover_color="#15803D",
+                command=self.show_students,
+            ).pack(side="left")
 
     def show_students(self):
 
