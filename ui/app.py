@@ -233,6 +233,79 @@ class StudentManagementApp(ctk.CTk):
                 command=self.show_students,
             ).pack(side="left")
 
+            recent_students_frame = ctk.CTkFrame(
+                self.content_frame, fg_color="white", corner_radius=12
+            )
+
+            recent_students_frame.pack(fill="x", padx=35, pady=(0, 25))
+
+            ctk.CTkLabel(
+                recent_students_frame,
+                text="Recent Student",
+                font=(
+                    "Arial",
+                    20,
+                    "bold",
+                ),
+                text_color="#172B4D",
+            ).pack(anchor="w", padx=20, pady=(20, 15))
+
+            recent_students = [
+                {
+                    "name": "Ali Ahmed",
+                    "email": "ali@example.com",
+                    "grade": "A",
+                    "status": "Passed",
+                },
+                {
+                    "name": "Sara Khan",
+                    "email": "sara@example.com",
+                    "grade": "B",
+                    "status": "Passed",
+                },
+                {
+                    "name": "Usman Malik",
+                    "email": "usman@example.com",
+                    "grade": "F",
+                    "status": "Failed",
+                },
+            ]
+
+            table_header = ctk.CTkFrame(
+                recent_students_frame, fg_color="#F1F5F9", corner_radius=6
+            )
+            table_header.pack(fill="x", padx=20, pady=(0, 5))
+
+            headers = ["Student Name", "Email", "Grade", "Status"]
+
+            for index, header in enumerate(headers):
+                table_header.grid_columnconfigure(index, weight=1)
+                ctk.CTkLabel(
+                    table_header,
+                    text=header,
+                    font=("Arial", 14, "bold"),
+                    text_color="#475569",
+                ).grid(row=0, column=index, sticky="w", padx=12, pady=12)
+
+                for student in recent_students:
+                    student_row = ctk.CTkLabel(
+                        recent_students_frame, fg_color="transparent"
+                    )
+                    student_row.pack(fill="x", padx=20, pady=2)
+
+                for index, key in enumerate(["name", "email", "grade", "status"]):
+                    student_row.grid_columnconfigure(index, weight=1)
+
+                    ctk.CTkLabel(
+                        student_row,
+                        text=student[key],
+                        font=("Aerial", 12),
+                        text_color="#172B4D",
+                    ).grid(row=0, column=index, sticky="w", padx=12, pady=12)
+                    ctk.CTkFrame(
+                        recent_students_frame, height=1, fg_color="#E2E8F0"
+                    ).pack(fill="x", padx=20)
+
     def show_students(self):
 
         self.clear_content()
